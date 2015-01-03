@@ -97,31 +97,20 @@ void reset () {
   digitalWrite(ADC_INV_SYNC, 1);
   digitalWrite(ADC_INV_CS, 1);
   digitalWrite(ADC_INV_RESET, 1);
-
-  
-  delayMicroseconds(10000);
+  delayMicroseconds(1000);
   digitalWrite(ADC_INV_RESET, 0);
-  delayMicroseconds(10000);
+  delayMicroseconds(1000);
   digitalWrite(ADC_INV_RESET, 1);
-  delayMicroseconds(100000);  // Self Calibration takes 3.8ms. This is plenty
-  SPI.transfer(0xFE); // Reset Command
-  delayMicroseconds(100000);
+  delayMicroseconds(8000);  // Self Calibration takes 3.8ms. This is twice as much.
 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(0x0F);  // SDATAC - Stop Data Continuous
   digitalWrite(ADC_INV_CS, 1); 
-  delayMicroseconds(100000); 
 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(0x00);  // Complete sync and exit standby mode
   digitalWrite(ADC_INV_CS, 1); 
-  delayMicroseconds(100000); 
-  
-  digitalWrite(ADC_INV_CS, 0); 
-  SPI.transfer(0x0F);  // SDATAC - Stop Data Continuous
-  digitalWrite(ADC_INV_CS, 1); 
-  delayMicroseconds(100000); 
-  
+  delayMicroseconds(100000);   
 }
 
 byte s, m, a, d, i;
@@ -144,7 +133,7 @@ void loop() {
           
   sprintf(charBuf, "STAT 0x%2x MUX  0x%2x CON  0x%2x RATE 0x%2x IO   0x%2x", s, m, a, d, i );
   Serial.println(charBuf);
-  //reset();
+  reset();
   delayMicroseconds(10000); 
 }
 
