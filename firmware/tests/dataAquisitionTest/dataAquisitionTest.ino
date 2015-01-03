@@ -42,7 +42,7 @@ void setup() {
   SPI.setDataMode(SPI_MODE0);
   resetDAC();
   writeDAC('A', 1000000);
-  writeDAC('A', 1000500);
+  writeDAC('B', 1000500);
   
 
   // Set SPI for ADC
@@ -64,8 +64,11 @@ void setup() {
 
   reset();
   DAC_write_register(ADC_REG_DRATE, ADC_SR_1k);
-  //DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
-  DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure current
+  //DAC_write_register(ADC_REG_DRATE, ADC_SR_2_5);
+
+  
+  DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
+  //DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure current
 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_RDATAC);
@@ -73,6 +76,7 @@ void setup() {
 }
 
 byte a,b,c;
+long full;
 char charBuf[512];
 
 void loop() {
@@ -81,9 +85,10 @@ void loop() {
   a = SPI.transfer(0);
   b = SPI.transfer(0);
   c = SPI.transfer(0);
+  full = c | (b<<8) | (a<<16);
   digitalWrite(ADC_INV_CS, 1); 
-  sprintf(charBuf, "0x%2x 0x%2x 0x%2x", a,b,c);
- // sprintf(charBuf, " %3d",c);
+  //sprintf(charBuf, "0x%2x 0x%2x 0x%2x\n%8ld", a,b,c,full);
+  sprintf(charBuf, " %8ld",full);
   Serial.println(charBuf);
 }
 
