@@ -68,7 +68,7 @@ void setup() {
   Serial.begin(9600);
   Serial.println(F(""));
   
-  SPI.setClockDivider(SPI_CLOCK_DIV16); // 8, 16
+  SPI.setClockDivider(SPI_CLOCK_DIV8); // 8, 16
   int mode = SPI_MODE1;
   SPI.setDataMode(mode);
   SPI.begin();
@@ -77,7 +77,7 @@ void setup() {
   pinMode(DAC_INV_CS, OUTPUT);
   digitalWrite(DAC_INV_CS, 1);
 
-  SPI.setClockDivider(SPI_CLOCK_DIV16);
+  SPI.setClockDivider(SPI_CLOCK_DIV8);
 
   // ADC Clock
   analogWriteFrequency(ADC_CLOCK_OUT, 375000*20); // 8MHz
@@ -128,27 +128,43 @@ byte s, m, a, d, i;
 char charBuf[512];
 
 void loop() {
+  waitForDRDYPulse();
   digitalWrite(ADC_INV_CS, 0); 
-  delayMicroseconds(1);
-  
   SPI.transfer(0b00010000); // Read Register 0
-  delayMicroseconds(1);
   SPI.transfer(5-1); // ... and the following 4
   delayMicroseconds(30); // Wait for t6 - 50x tclkin = 125ns
+  // Wait fo drdy as well
+  waitForDRDYPulse();
   s = SPI.transfer(0b00000000); // Read it
-  delayMicroseconds(1);
   m = SPI.transfer(0b00000000); // Read it
-  delayMicroseconds(1);
   a = SPI.transfer(0b00000000); // Read it
-  delayMicroseconds(1);
   d = SPI.transfer(0b00000000); // Read it
-  delayMicroseconds(1);
   i = SPI.transfer(0b00000000);
-  delayMicroseconds(2);
   digitalWrite(ADC_INV_CS, 1); 
           
   sprintf(charBuf, "STAT 0x%2x MUX  0x%2x CON  0x%2x RATE 0x%2x IO   0x%2x", s, m, a, d, i );
   Serial.println(charBuf);
   //reset();
-  delayMicroseconds(1000000); 
+  delayMicroseconds(10000); 
+}
+
+void waitForDRDYLow() {
+  // wait up to 1 second for DRDY to go low
+  unsigned int count = 0;
+  while (digitalRead(ADC_INV_DRDY) && count < 1000000 ) {
+    delayMicroseconds(1);
+    count ++;
+  }
+}
+void waitForDRDYHigh() {
+  // wait up to 1 second for DRDY to go low
+  unsigned int count = 0;
+  while (!(digitalRead(ADC_INV_DRDY)) && count < 1000000 ) {
+    delayMicroseconds(1);
+    count ++;
+  }
+}
+void waitForDRDYPulse() {
+  waitForDRDYHigh();
+  waitForDRDYLow();
 }
