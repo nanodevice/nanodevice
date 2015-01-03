@@ -54,7 +54,8 @@ void setup() {
   pinMode(ADC_INV_RESET, OUTPUT);
 
   reset();
-  
+  DAC_write_register(ADC_REG_DRATE, ADC_SR_1k);
+
 }
 
 byte stat, mux, adcon, datarate, gpio;
@@ -62,12 +63,8 @@ char charBuf[512];
 
 void loop() {
   scanBuffers();
-//  DAC_write_register(ADC_REG_DRATE, ADC_SR_500);
-  delayMicroseconds(10);
-  scanBuffers();
- //DAC_write_register(ADC_REG_DRATE, ADC_SR_30k);
-  delayMicroseconds(100000); 
 }
+
 void scanBuffers() {
   stat     = DAC_read_register(ADC_REG_STATUS);
   mux      = DAC_read_register(ADC_REG_MUX);

@@ -1,3 +1,21 @@
+/*                        +-----USB-------+
+                     GND |GND         VIN|
+                         | 0         AGND|
+            ADC_INV_SYNC | 1   top   3.3V|
+                         | 2   view    23|
+            ADC_INV_DRDY*| 3           22|
+           ADC_INV_RESET | 4    T      21|
+             DAC_INV_CLR | 5    E      20|
+    (ADC_RAW_CLK - 8MHz) | 6    E      19|
+            DAC_INV_LDAC | 7    N      18|
+                         | 8    S      17|
+              ADC_INV_CS*| 9    Y      16|
+              DAC_INV_CS |10           15|
+                    MOSI*|11           14|
+                    MISO*|12           13|*SPI_CLK
+                         +---------------+
+*/
+
 // Board Pinouts: DAC
 static const int DAC_INV_CLR    =  5; // DAC PIN 5
 static const int DAC_INV_LDAC   =  7; // DAC Pin 4
