@@ -1,0 +1,236 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B1BA3AFB19AA639800EB5E14 /* hid.c in Sources */ = {isa = PBXBuildFile; fileRef = B1BA3AF819AA639800EB5E14 /* hid.c */; };
+		B1BA3AFC19AA639800EB5E14 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = B1BA3AFA19AA639800EB5E14 /* main.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B1BA3AEA19AA630900EB5E14 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B1BA3AEC19AA630900EB5E14 /* hidDriver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hidDriver; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1BA3AF819AA639800EB5E14 /* hid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = hid.c; path = ../hid.c; sourceTree = "<group>"; };
+		B1BA3AF919AA639800EB5E14 /* hid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hid.h; path = ../hid.h; sourceTree = "<group>"; };
+		B1BA3AFA19AA639800EB5E14 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../main.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B1BA3AE919AA630900EB5E14 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B1BA3AE319AA630900EB5E14 = {
+			isa = PBXGroup;
+			children = (
+				B1BA3AF819AA639800EB5E14 /* hid.c */,
+				B1BA3AF919AA639800EB5E14 /* hid.h */,
+				B1BA3AFA19AA639800EB5E14 /* main.c */,
+				B1BA3AEE19AA630900EB5E14 /* hidDriver */,
+				B1BA3AED19AA630900EB5E14 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B1BA3AED19AA630900EB5E14 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1BA3AEC19AA630900EB5E14 /* hidDriver */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B1BA3AEE19AA630900EB5E14 /* hidDriver */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = hidDriver;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B1BA3AEB19AA630900EB5E14 /* hidDriver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1BA3AF519AA630900EB5E14 /* Build configuration list for PBXNativeTarget "hidDriver" */;
+			buildPhases = (
+				B1BA3AE819AA630900EB5E14 /* Sources */,
+				B1BA3AE919AA630900EB5E14 /* Frameworks */,
+				B1BA3AEA19AA630900EB5E14 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hidDriver;
+			productName = hidDriver;
+			productReference = B1BA3AEC19AA630900EB5E14 /* hidDriver */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B1BA3AE419AA630900EB5E14 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "LingoTeach, Inc.";
+			};
+			buildConfigurationList = B1BA3AE719AA630900EB5E14 /* Build configuration list for PBXProject "hidDriver" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B1BA3AE319AA630900EB5E14;
+			productRefGroup = B1BA3AED19AA630900EB5E14 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B1BA3AEB19AA630900EB5E14 /* hidDriver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B1BA3AE819AA630900EB5E14 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1BA3AFC19AA639800EB5E14 /* main.c in Sources */,
+				B1BA3AFB19AA639800EB5E14 /* hid.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B1BA3AF319AA630900EB5E14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B1BA3AF419AA630900EB5E14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		B1BA3AF619AA630900EB5E14 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B1BA3AF719AA630900EB5E14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B1BA3AE719AA630900EB5E14 /* Build configuration list for PBXProject "hidDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1BA3AF319AA630900EB5E14 /* Debug */,
+				B1BA3AF419AA630900EB5E14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B1BA3AF519AA630900EB5E14 /* Build configuration list for PBXNativeTarget "hidDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1BA3AF619AA630900EB5E14 /* Debug */,
+				B1BA3AF719AA630900EB5E14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B1BA3AE419AA630900EB5E14 /* Project object */;
+}
