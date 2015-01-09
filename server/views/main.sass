@@ -1,0 +1,73 @@
+$font-stack:    Helvetica, sans-serif
+$primary-color: hsl(245,100,0)
+$base-width: 250px
+$spacing: 10px
+$color-offset: 40
+$secondary-color: desaturate(lighten(adjust-hue($primary-color, $color-offset),90),90)
+$tertiary-color: desaturate(lighten(adjust-hue($primary-color, -$color-offset),90), 90)
+
+
+
+body
+  font: 100% $font-stack
+  color: $primary-color
+  background-color: $secondary-color
+
+h1
+  font-weight: bold
+  font: 170% $font-stack
+  margin: 0.5em
+
+h2
+  font-weight: bold
+
+.panelHead
+  font-weight: bold
+  margin-bottom: 0.5em
+  color: $primary-color
+
+#chartContainer
+  height: 300px
+  width: 2*$base-width
+
+.controlPanel
+  border-top: solid $primary-color
+  background-color: darken($tertiary-color,10)
+  margin: $spacing/2
+  width:  $base-width
+  float: left
+  //background: #CCCCCC
+  //border: 2px solid #333
+  padding: 0.5em
+  //spacing: 25px
+//  float: right
+//  background-color: #ccc
+//  margin: 1px
+//  border: 1px
+//  border-color: #fff
+.double-size 
+  width: 2*$base-width+$spacing+40px
+
+.number
+  text-align: right
+  width: 4em
+
+// Clearfix
+//.cf:before,
+//.cf:after 
+//  content: " " 
+//  display: table 
+
+.tbl
+  border: 1px solid black
+  border-spacing: 1em
+  border-collapse: separate
+
+
+.cf:after 
+  clear: both
+
+
+
+.cf 
+  *zoom: 1

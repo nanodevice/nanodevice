@@ -1,0 +1,136 @@
+%html
+  %head
+    %title
+      Pore Control
+
+    // Stylesheets
+    %link{:rel => :stylesheet, :type => :"text/css", :href => "/reset.css"}
+    %link{:rel => :stylesheet, :type => :"text/css", :href => "/main.css"}
+
+    // jquery
+    %script(src="javascripts/jquery-1.11.1.js")
+
+    // The graphing library
+    %script(src="javascripts/masonry.pkgd.min.js")
+    %script(src="javascripts/canvasjs.min.js")
+
+    // Color picker
+    %script(src="javascripts/jscolor.js")
+
+    %script(src="grapher.js")
+    %script(src="masonry.js")
+    
+    // Init Javascript
+    :javascript
+      window.onload = function() {window.graphInit(); window.masonryInit();}
+
+  %body
+    %h1 Pore control
+
+    .controls.cf.container#container
+
+      .controlPanel.double-size
+        .panelHead Graph
+        #chartContainer
+
+      .controlPanel
+        .panelHead Voltages [mV]
+        %table.tbl
+          %tr
+            %td
+              cis
+            %td
+              %input.number{ :type=>"text", :value=>"10"}
+                
+            %td.number
+              %span#cisReadback
+                9                          
+          %tr
+            %td
+              trans 
+            %td
+              %input.number{ :type=>"text", :value=>"130"}
+                
+            %td.number
+              %span#transReadback
+                129
+          %tr
+            %td
+              pore
+            %td
+            %td.number
+              %span#crossPore
+                120
+
+      .controlPanel#temperature
+        .panelHead Temperature [&deg;C]
+        %ul 
+          %li 
+            %input{ :type=>"checkbox" } 
+            %label Enabled 
+          
+            %input.number{ :type=>"text", :value => "21"}
+            %span#tempReadback
+              20.92
+
+      .controlPanel
+        .panelHead Transillumination
+        %ul
+          %li 
+            %input{ :type=>"checkbox" } 
+            %label Enable
+          %li
+            %input.color
+            color
+
+      
+    
+          
+        %button Reverse for 1s
+
+      .controlPanel
+        .panelHead ADC
+        %ul
+          %li
+            %label Acquire 
+            %select
+              %option off
+              %option 10k
+              %option 1k
+              %option 10k Averaged to 1k
+              %option 10k Noise Suppression A to 1k
+          %li 
+            Aquire to file
+            %input{ :type=>"text"}
+            %input{ :type=>"checkbox" } Acquiring to file
+
+
+      .controlPanel.double-size
+        .panelHead Run Application
+        %textarea
+      .controlPanel
+        .panelHead Revisions
+        %table.tbl 
+          %tr
+            %td
+              Firmware
+            %td
+              %span#firmRev abc 
+            %td 
+              10Dec2014
+          %tr
+            %td
+              Server
+            %td
+              %span#firmRev abc 
+            %td 
+              12Dec2014
+          %tr
+            %td
+              Board
+            %td
+              %span#firmRev abc 
+            %td
+              12Dec2014
+
+
