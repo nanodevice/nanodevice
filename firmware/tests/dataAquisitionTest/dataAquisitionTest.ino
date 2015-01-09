@@ -49,7 +49,7 @@ void setup() {
   writeDAC('B', 1001000); // Set to 1001mV
 
   ADC_write_register(ADC_REG_DRATE, ADC_SR_1k);
-  //ADC_write_register(ADC_REG_DRATE, ADC_SR_2_5);
+  // ADC_write_register(ADC_REG_DRATE, ADC_SR_2_5);
   
   ADC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
   // ADC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure temperature

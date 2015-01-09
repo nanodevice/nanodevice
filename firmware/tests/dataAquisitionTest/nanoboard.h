@@ -109,7 +109,7 @@ void waitForDRDYPulse() {
   waitForDRDYLow();
 }
 
-byte DAC_read_register(byte reg) {
+byte ADC_read_register(byte reg) {
   waitForDRDYPulse(); // Wait fo drdy - this appears to increase stability
   SPI.beginTransaction(spi_dac_settings); 
   digitalWrite(ADC_INV_CS, 0); 
