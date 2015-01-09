@@ -69,10 +69,12 @@ void setup() {
   
   DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
   //DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure current
-
+  
+  SPI.beginTransaction(spi_adc_settings); 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_RDATAC);
   digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
 }
 
 byte a,b,c;
@@ -80,13 +82,15 @@ long full;
 char charBuf[512];
 
 void loop() {
-  waitForDRDYPulse();
+  waitForDRDYPulse();  
+  SPI.beginTransaction(spi_adc_settings); 
   digitalWrite(ADC_INV_CS, 0); 
   a = SPI.transfer(0);
   b = SPI.transfer(0);
   c = SPI.transfer(0);
   full = c | (b<<8) | (a<<16);
   digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
   //sprintf(charBuf, "0x%2x 0x%2x 0x%2x\n%8ld", a,b,c,full);
   sprintf(charBuf, " %8ld",full);
   Serial.println(charBuf);

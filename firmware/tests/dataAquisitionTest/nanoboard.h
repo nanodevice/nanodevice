@@ -83,6 +83,9 @@ static const byte ADC_SR_2_5  = 0x03;
 // All delays in ns.
 static const int CLKIN_PERIOD = 3; // 8MHz;
 
+SPISettings spi_dac_settings(1000000, MSBFIRST, SPI_MODE0); 
+SPISettings spi_adc_settings(1000000, MSBFIRST, SPI_MODE1); 
+
 void waitForDRDYLow() {
   // wait up to 1 second for DRDY to go low
   unsigned int count = 0;
@@ -108,22 +111,27 @@ void waitForDRDYPulse() {
 
 byte DAC_read_register(byte reg) {
   waitForDRDYPulse(); // Wait fo drdy - this appears to increase stability
+  SPI.beginTransaction(spi_dac_settings); 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_RREG | reg); // Read Register 0
   SPI.transfer(1-1); // exactly 1 register
   delayMicroseconds(1); // Wait for t6 - 50x tclkin = 125ns
   waitForDRDYPulse();   // Wait fo drdy as well - this appears to increase stability
+                        // TODO: Verify if DRDY pulse is needed
   byte retval = SPI.transfer(0x00); // Read it
   digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
   return retval;
 }
 
 void DAC_write_register(byte reg, byte value) {
+  SPI.beginTransaction(spi_dac_settings); 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_WREG | reg); // Read Register 0
   SPI.transfer(1-1); // exactly 1 register
   SPI.transfer(value); // Read it
   digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
 }
 
 void reset() {
@@ -134,12 +142,14 @@ void reset() {
   digitalWrite(ADC_INV_RESET, 1);
   delayMicroseconds(8000);  // Self Calibration takes 3.8ms. This is twice as much.
 
+  SPI.beginTransaction(spi_adc_settings);
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_SDATAC);  // SDATAC - Stop Data Continuous
 
   SPI.transfer(ADC_CMD_WAKEUP);  // Complete sync and exit standby mode
   
   digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
 
   delayMicroseconds(8000);   
   
@@ -148,6 +158,7 @@ void reset() {
 }
 
 void writeToDAC(char a, char b, char c) {
+  SPI.beginTransaction(spi_dac_settings); 
   digitalWrite(DAC_INV_CS, 0);
   delayMicroseconds(1);
   // Disable internal ref
@@ -156,6 +167,7 @@ void writeToDAC(char a, char b, char c) {
   SPI.transfer(c);       // DB07..00 =
   delayMicroseconds(2);
   digitalWrite(DAC_INV_CS, 1); 
+  SPI.endTransaction();
 }
 
 void resetDAC() {
