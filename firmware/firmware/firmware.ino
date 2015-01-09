@@ -95,7 +95,7 @@ void setDataRate(char* message, byte rate) {
   ADC_write_register(ADC_REG_DRATE, rate);
   ADC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
  
-  sprintf(charBuf, "Rate set to %.", message);
+  sprintf(charBuf, "Rate set to %s.", message);
   transmitString('c', charBuf);
   acquisition = true;
   startADCContinuousAcquisition();
@@ -168,12 +168,17 @@ void processHostCommand() {
           case 'r': // Reset
               acquisition = false;
               resetADC();
+              transmitString('c', "Reset ADC; stopped acquisition.");
             break;
           case '0': // disable daq
+              acquisition = false;
               stopADCContinuousAcquisition();
+              transmitString('c', "Stopped acquisition.");
             break;
-            
-          case '2': // 1 record per second
+          case '1': 
+              setDataRate("2.5Hz", ADC_SR_2_5);
+            break;
+          case '2':
               setDataRate("5Hz", ADC_SR_5);
             break;
           case '3': 
@@ -213,11 +218,12 @@ void processHostCommand() {
               setDataRate("15kHz", ADC_SR_15k);
             break;                        
           default: 
-            // TODO: Debug
+            transmitString('c', "Unknown acquisition mode.");
           break;
         }
         break;
-      default: // TODO: Error message
+      default:
+            transmitString('c', "Unknown command character.");
         break;
     }
   }
