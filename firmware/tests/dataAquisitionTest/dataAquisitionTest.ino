@@ -40,36 +40,21 @@ void setup() {
   // Set some DAC voltages
 
   setupDAC();
+  setupADC();
+
   resetDAC();
-  writeDAC('A', 1000000);
-  writeDAC('B', 1000500);
-
-
-
+  resetADC();
   
-  // ADC Clock
-  analogWriteFrequency(ADC_CLOCK_OUT, 375000*20); // 8MHz
-  analogWrite(ADC_CLOCK_OUT, 125); 
-  
-  // Set up the ADC pins
-  pinMode(ADC_INV_DRDY, INPUT);
-  pinMode(ADC_INV_SYNC, OUTPUT);
-  pinMode(ADC_INV_CS, OUTPUT);
-  pinMode(ADC_INV_RESET, OUTPUT);
+  writeDAC('A', 1000000); // Set to 1V
+  writeDAC('B', 1001000); // Set to 1001mV
 
-  reset();
-  DAC_write_register(ADC_REG_DRATE, ADC_SR_1k);
-  //DAC_write_register(ADC_REG_DRATE, ADC_SR_2_5);
-
+  ADC_write_register(ADC_REG_DRATE, ADC_SR_1k);
+  //ADC_write_register(ADC_REG_DRATE, ADC_SR_2_5);
   
-  DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
-  //DAC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure current
+  ADC_write_register(ADC_REG_MUX, ADC_MUX_VAL_CURRENT); // measure current
+  // ADC_write_register(ADC_REG_MUX, ADC_MUX_VAL_TEMP); // measure temperature
   
-  SPI.beginTransaction(spi_adc_settings); 
-  digitalWrite(ADC_INV_CS, 0); 
-  SPI.transfer(ADC_CMD_RDATAC);
-  digitalWrite(ADC_INV_CS, 1); 
-  SPI.endTransaction();
+  DAC_send_command(ADC_CMD_RDATAC); // Start continuous aquisition
 }
 
 byte a,b,c;

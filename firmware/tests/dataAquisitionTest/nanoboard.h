@@ -124,8 +124,8 @@ byte DAC_read_register(byte reg) {
   return retval;
 }
 
-void DAC_write_register(byte reg, byte value) {
-  SPI.beginTransaction(spi_dac_settings); 
+void ADC_write_register(byte reg, byte value) {
+  SPI.beginTransaction(spi_adc_settings); 
   digitalWrite(ADC_INV_CS, 0); 
   SPI.transfer(ADC_CMD_WREG | reg); // Read Register 0
   SPI.transfer(1-1); // exactly 1 register
@@ -141,7 +141,19 @@ void setupDAC() {
   digitalWrite(DAC_INV_LDAC, 1);
 }
 
-void reset() {
+void setupADC() {
+  // ADC Clock
+  analogWriteFrequency(ADC_CLOCK_OUT, 375000*20); // 8MHz
+  analogWrite(ADC_CLOCK_OUT, 125); 
+  
+  // Set up the ADC pins
+  pinMode(ADC_INV_DRDY, INPUT);
+  pinMode(ADC_INV_SYNC, OUTPUT);
+  pinMode(ADC_INV_CS, OUTPUT);
+  pinMode(ADC_INV_RESET, OUTPUT);
+}
+
+void resetADC() {
   digitalWrite(ADC_INV_SYNC, 1);
   digitalWrite(ADC_INV_CS, 1);
   digitalWrite(ADC_INV_RESET, 0);
@@ -159,9 +171,6 @@ void reset() {
   SPI.endTransaction();
 
   delayMicroseconds(8000);   
-  
-  DAC_write_register(ADC_REG_DRATE, ADC_SR_1k);
-
 }
 
 void writeToDAC(char a, char b, char c) {
@@ -206,4 +215,12 @@ void writeDAC(const char channel, const int microVolts) {
   } else if (channel == 'B') {
     writeToDAC(0b00011001, high, low);
   } 
+}
+
+void DAC_send_command(byte command) {
+  SPI.beginTransaction(spi_adc_settings); 
+  digitalWrite(ADC_INV_CS, 0); 
+  SPI.transfer(command);
+  digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
 }
