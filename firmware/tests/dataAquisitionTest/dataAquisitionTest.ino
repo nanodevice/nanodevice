@@ -57,20 +57,15 @@ void setup() {
   DAC_send_command(ADC_CMD_RDATAC); // Start continuous aquisition
 }
 
-byte a,b,c;
+byte daqBuf[3];
 long full;
 char charBuf[512];
 
 void loop() {
   waitForDRDYPulse();  
-  SPI.beginTransaction(spi_adc_settings); 
-  digitalWrite(ADC_INV_CS, 0); 
-  a = SPI.transfer(0);
-  b = SPI.transfer(0);
-  c = SPI.transfer(0);
-  full = c | (b<<8) | (a<<16);
-  digitalWrite(ADC_INV_CS, 1); 
-  SPI.endTransaction();
+  ADCReadData(daqBuf);
+  full = daqBuf[0] | (daqBuf[1]<<8) | (daqBuf[2]<<16);
+
   //sprintf(charBuf, "0x%2x 0x%2x 0x%2x\n%8ld", a,b,c,full);
   sprintf(charBuf, " %8ld",full);
   Serial.println(charBuf);

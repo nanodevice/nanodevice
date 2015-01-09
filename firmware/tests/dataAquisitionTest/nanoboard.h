@@ -224,3 +224,14 @@ void DAC_send_command(byte command) {
   digitalWrite(ADC_INV_CS, 1); 
   SPI.endTransaction();
 }
+
+// Reads 3 bytes from the ADC
+void ADCReadData(byte *buffer) {
+  SPI.beginTransaction(spi_adc_settings); 
+  digitalWrite(ADC_INV_CS, 0); 
+  buffer[2] = SPI.transfer(0);
+  buffer[1] = SPI.transfer(0);
+  buffer[0] = SPI.transfer(0);
+  digitalWrite(ADC_INV_CS, 1); 
+  SPI.endTransaction();
+}
