@@ -134,6 +134,13 @@ void DAC_write_register(byte reg, byte value) {
   SPI.endTransaction();
 }
 
+void setupDAC() {
+  pinMode(DAC_INV_CS, OUTPUT);
+  pinMode(DAC_INV_LDAC, OUTPUT);
+  digitalWrite(DAC_INV_CS, 1);
+  digitalWrite(DAC_INV_LDAC, 1);
+}
+
 void reset() {
   digitalWrite(ADC_INV_SYNC, 1);
   digitalWrite(ADC_INV_CS, 1);

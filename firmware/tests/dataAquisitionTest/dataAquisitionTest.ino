@@ -38,19 +38,14 @@ void setup() {
   
   SPI.begin();
   // Set some DAC voltages
-  SPI.setClockDivider(SPI_CLOCK_DIV8);
-  SPI.setDataMode(SPI_MODE0);
+
+  setupDAC();
   resetDAC();
   writeDAC('A', 1000000);
   writeDAC('B', 1000500);
-  
 
-  // Set SPI for ADC
-  SPI.setClockDivider(SPI_CLOCK_DIV8);
-  SPI.setDataMode(SPI_MODE1);
 
-  pinMode(DAC_INV_CS, OUTPUT);
-  digitalWrite(DAC_INV_CS, 1);
+
   
   // ADC Clock
   analogWriteFrequency(ADC_CLOCK_OUT, 375000*20); // 8MHz
