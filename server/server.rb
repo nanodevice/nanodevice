@@ -6,21 +6,12 @@ require 'coffee-script'
 require 'sinatra-websocket'
 require 'open3'
 require 'JSON'
-require 'pty'
 
 set :server, 'thin'
+
+# Array of websockets, one for each open page
+# to stream the data to.
 set :sockets, []
-
-@i=0
-
-def send_tick
-  for x in 1..100 do 
-    settings.sockets.each do |s| 
-      s.send(@i.to_s)
-    end 
-    @i = @i + (rand(6)-2.5).ceil
-  end
-end
 
 # Open the driver
 
@@ -28,51 +19,37 @@ Thread.new do
   puts "Popen!"
   PTY.spawn("../driver/driver") do |stdin, stdout, pid|
     puts "Popened!"
-    # Acquire data at speed 2
+    # Reset the hardware
     stdout.puts "R;"
     delay(1)
-    stdout.puts "sa100;"
+    # Set voltage A to 1000000uV (1V)
+    stdout.puts "sa1000000;"
     delay(1)
-    stdout.puts "sb600;"
+    # Set voltage B to 1010000uV (1010mV)
+    stdout.puts "sb1001000;"
     delay(1)
-    stdout.puts "d1;" # See firmware for codes
+    # Set data acquisition rate to 500Hz
+    # See firmware for real acquisition codes;
+    # d3; -> 10Hz, d5; -> 30Hz, d9; -> 500Hz, da; -> 1kHz, de; -> 15kHz.
+    stdout.puts "d9;"  
     delay(1)
     puts "Started DAQ"
     while 1 do 
       begin
-        sumCount = 0
-        sum = 0
-        min = 10000
-        max = 0
-        sumMax = 100
         stdin.each do |line|
-          #puts line
+          # Line has the format of {"data": [1,2,3,4]}
           json = JSON.parse(line)
-          #puts "Have #{settings.sockets.count} sockets!"
+
+          # To each socket send each value
           settings.sockets.each do |s|
             json["data"].each do |val|
-              sum = sum + val
-              sumCount = sumCount + 1
-              if val > max 
-                max = val
-              end
-              if val < min  
-                min = val
-              end
-              if sumCount >= sumMax
-                s.send((sum/sumMax).to_s)
-                #s.send(min.to_s)
-                #s.send(max.to_s)
-                sumCount = 0
-                min = 10000
-                max = 0
-                sum = 0
-              end
+              s.send(val.to_s)
             end
-            #  puts "sending to socket"
-            #s.send(json["data"][0].to_s)
           end
+          #  puts "sending to socket"
+          #s.send(json["data"][0].to_s)
         end
+        
       rescue Exception => e
        # puts "Error parsing: #{e}"
       end
@@ -102,17 +79,22 @@ get '/masonry.js' do
 end
 
 get '/datafeed' do
+  # If it's not a websocket connection, just show the index page.
   if !request.websocket?
     haml :index
   else
+    # Open the websocket, and send a number. 
     request.websocket do |ws|
       ws.onopen do
         ws.send("-2")
         settings.sockets << ws
       end
+
+      # There should be nothing done with incoming data.
       ws.onmessage do |msg|
         
       end
+
       ws.onclose do
         warn("websocket closed")
         settings.sockets.delete(ws)
