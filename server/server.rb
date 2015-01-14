@@ -4,7 +4,7 @@ require 'sass'
 require 'haml' 
 require 'coffee-script'
 require 'sinatra-websocket'
-require 'open3'
+require 'socket'
 require 'JSON'
 
 set :server, 'thin'
@@ -16,46 +16,41 @@ set :sockets, []
 # Open the driver
 
 Thread.new do
-  puts "Popen!"
-  PTY.spawn("../driver/driver") do |stdin, stdout, pid|
-    puts "Popened!"
-    # Reset the hardware
-    stdout.puts "R;"
-    delay(1)
-    # Set voltage A to 1000000uV (1V)
-    stdout.puts "sa1000000;"
-    delay(1)
-    # Set voltage B to 1010000uV (1010mV)
-    stdout.puts "sb1001000;"
-    delay(1)
-    # Set data acquisition rate to 500Hz
-    # See firmware for real acquisition codes;
-    # d3; -> 10Hz, d5; -> 30Hz, d9; -> 500Hz, da; -> 1kHz, de; -> 15kHz.
-    stdout.puts "d9;"  
-    delay(1)
-    puts "Started DAQ"
-    while 1 do 
-      begin
-        stdin.each do |line|
-          # Line has the format of {"data": [1,2,3,4]}
-          json = JSON.parse(line)
+  puts "Connecting to server on 3430"
+  nanoSocket = TCPSocket.open("127.0.0.1", 3430)
+  puts "Connected to server"
+  # Reset the hardware
+  nanoSocket.puts "R;"
+  # Set voltage A to 1000000uV (1V)
+  nanoSocket.puts "sa1000000;"
+  # Set voltage B to 1010000uV (1010mV)
+  nanoSocket.puts "sb1001000;"
+  # Set data acquisition rate to 500Hz
+  # See firmware for real acquisition codes;
+  # d3; -> 10Hz, d5; -> 30Hz, d9; -> 500Hz, da; -> 1kHz, de; -> 15kHz.
+  nanoSocket.puts "d9;"  
+  puts "Started DAQ"
+  while 1 do 
+    begin
+        while line = nanoSocket.gets
+        puts "Got #{line}"
+        # Line has the format of {"data": [1,2,3,4]}
+        json = JSON.parse(line)
 
-          # To each socket send each value
-          settings.sockets.each do |s|
-            json["data"].each do |val|
-              s.send(val.to_s)
-            end
+        # To each socket send each value
+        settings.sockets.each do |s|
+          json["data"].each do |val|
+            s.send(val.to_s)
           end
-          #  puts "sending to socket"
-          #s.send(json["data"][0].to_s)
         end
-        
-      rescue Exception => e
-       # puts "Error parsing: #{e}"
+        #  puts "sending to socket"
+        #s.send(json["data"][0].to_s)
       end
-    end    
-  end
-  puts "Popend!"
+      
+    rescue Exception => e
+     # puts "Error parsing: #{e}"
+    end
+  end    
 end
 
 get '/' do 
@@ -84,6 +79,7 @@ get '/datafeed' do
     haml :index
   else
     # Open the websocket, and send a number. 
+
     request.websocket do |ws|
       ws.onopen do
         ws.send("-2")
